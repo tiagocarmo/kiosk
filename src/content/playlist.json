@@ -1,0 +1,58 @@
+{
+  "config": {
+    "defaultDuration": 10000
+  },
+  "slides": [
+    {
+      "type": "cover",
+      "duration": 5000,
+      "props": {
+        "monthLabel": "Janeiro 2026",
+        "title": "TV CORPORATIVA",
+        "backgroundColor": "#00C800"
+      }
+    },
+    {
+      "type": "birthday",
+      "props": {
+        "title": "ANIVERSARIANTE DO DIA",
+        "personName": "Camila Balta",
+        "area": "Pessoas & Cultura",
+        "dateLabel": "22 de janeiro",
+        "photoAsset": "https://picsum.photos/400/500?random=1"
+      }
+    },
+    {
+      "type": "tenure",
+      "props": {
+        "title": "TEMPO DE CASA",
+        "personName": "João Silva",
+        "area": "Engenharia",
+        "dateLabel": "22 de janeiro",
+        "yearsNumber": 7,
+        "photoAsset": "https://picsum.photos/400/500?random=2"
+      }
+    },
+    {
+      "type": "news",
+      "props": {
+        "title": "ACONTECEU NA MINU",
+        "monthLabel": "Janeiro/26",
+        "bullets": [
+          "Workshop de Liderança",
+          "Lançamento da nova marca",
+          "Happy Hour trimestral"
+        ],
+        "themeColor": "#ff66b2"
+      }
+    },
+    {
+      "type": "area-info",
+      "props": {
+        "title": "ÁREA INFORMA",
+        "bodyText": "Revisão de metas trimestrais \nagendada para a próxima \nsegunda-feira. \n\nContamos com a presença \nde todos.",
+        "themeColor": "#87ceeb"
+      }
+    }
+  ]
+}
