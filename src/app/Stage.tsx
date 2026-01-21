@@ -23,7 +23,7 @@ const Stage: React.FC<StageProps> = ({ children }) => {
       // Or cover viewport if prefered? The requirement says "adjust automatically... preserving proportion".
       // Usually "contain" logic is safer for information displays so nothing gets cut off.
       const newScale = Math.min(scaleX, scaleY);
-      
+
       setScale(newScale);
     };
 
@@ -34,7 +34,7 @@ const Stage: React.FC<StageProps> = ({ children }) => {
   }, []);
 
   return (
-    <div 
+    <div
       className="relative flex items-center justify-center w-full h-full bg-black overflow-hidden"
     >
       <div

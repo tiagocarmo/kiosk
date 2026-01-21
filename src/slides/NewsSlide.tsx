@@ -32,10 +32,10 @@ const NewsSlide: React.FC<NewsSlideProps> = ({
 
       <div className="w-1/2 relative h-full flex justify-center items-end">
         <div className="absolute top-0 right-0 text-3xl font-bold">
-            {monthLabel}
+          {monthLabel}
         </div>
         <div className="h-[90%] w-full flex justify-center items-end relative">
-             <ArchShape color={themeColor} className="h-full w-auto" />
+          <ArchShape color={themeColor} className="h-full w-auto" />
         </div>
       </div>
     </div>

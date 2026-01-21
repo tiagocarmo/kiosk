@@ -1,6 +1,5 @@
 import React from 'react';
 import { WavyLine, MinuLogo } from '../components/Shapes';
-import { cn } from '../lib/utils';
 
 interface BirthdaySlideProps {
   title: string;
@@ -33,9 +32,9 @@ const BirthdaySlide: React.FC<BirthdaySlideProps> = ({
             {photoAsset ? (
               <img src={photoAsset} alt={personName} className="w-full h-full object-cover" />
             ) : (
-               <div className="w-full h-full flex items-center justify-center text-gray-400">
-                 <span className="text-4xl">FOTO</span>
-               </div>
+              <div className="w-full h-full flex items-center justify-center text-gray-400">
+                <span className="text-4xl">FOTO</span>
+              </div>
             )}
           </div>
           {/* Info Footer */}
@@ -46,7 +45,7 @@ const BirthdaySlide: React.FC<BirthdaySlideProps> = ({
         </div>
 
         <div className="mt-12 ml-32">
-             <MinuLogo className="h-12 w-auto" color="black" />
+          <MinuLogo className="h-12 w-auto" color="black" />
         </div>
       </div>
 
@@ -56,7 +55,7 @@ const BirthdaySlide: React.FC<BirthdaySlideProps> = ({
           {dateLabel}
         </div>
         <div className="absolute top-0 right-0 h-[120%] -mr-24 -mt-10">
-           <WavyLine color="#ff66b2" className="h-full w-auto" />
+          <WavyLine color="#ff66b2" className="h-full w-auto" />
         </div>
       </div>
     </div>

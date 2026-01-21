@@ -8,7 +8,7 @@ const Player: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [showControls, setShowControls] = useState(false);
-  
+
   const timerRef = useRef<number | null>(null);
   const controlsTimeoutRef = useRef<number | null>(null);
 
@@ -44,7 +44,7 @@ const Player: React.FC = () => {
     if (isPlaying) {
       const currentSlide = slides[currentIndex];
       const duration = currentSlide.duration || defaultConfig.defaultDuration;
-      
+
       timerRef.current = window.setTimeout(() => {
         nextSlide();
       }, duration);
@@ -90,26 +90,26 @@ const Player: React.FC = () => {
 
   // Mouse move to show controls
   useEffect(() => {
-      const handleMouseMove = () => {
-          setShowControls(true);
-          if (controlsTimeoutRef.current) clearTimeout(controlsTimeoutRef.current);
-          controlsTimeoutRef.current = window.setTimeout(() => setShowControls(false), 3000);
-      };
-      window.addEventListener('mousemove', handleMouseMove);
-      return () => {
-          window.removeEventListener('mousemove', handleMouseMove);
-          if (controlsTimeoutRef.current) clearTimeout(controlsTimeoutRef.current);
-      };
+    const handleMouseMove = () => {
+      setShowControls(true);
+      if (controlsTimeoutRef.current) clearTimeout(controlsTimeoutRef.current);
+      controlsTimeoutRef.current = window.setTimeout(() => setShowControls(false), 3000);
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      if (controlsTimeoutRef.current) clearTimeout(controlsTimeoutRef.current);
+    };
   }, []);
 
   // Preload next image logic (simple version)
   useEffect(() => {
-      const nextIdx = (currentIndex + 1) % slides.length;
-      const nextSlideData = slides[nextIdx];
-      if (nextSlideData.props.photoAsset) {
-          const img = new Image();
-          img.src = nextSlideData.props.photoAsset;
-      }
+    const nextIdx = (currentIndex + 1) % slides.length;
+    const nextSlideData = slides[nextIdx];
+    if (nextSlideData.props.photoAsset) {
+      const img = new Image();
+      img.src = nextSlideData.props.photoAsset;
+    }
   }, [currentIndex, slides]);
 
 
@@ -126,7 +126,7 @@ const Player: React.FC = () => {
       </Stage>
 
       {/* Floating Controls */}
-      <div 
+      <div
         className={`absolute bottom-8 left-1/2 transform -translate-x-1/2 bg-black/60 backdrop-blur-md rounded-full px-6 py-3 flex items-center gap-6 transition-opacity duration-300 ${showControls ? 'opacity-100' : 'opacity-0'}`}
       >
         <button onClick={prevSlide} className="text-white hover:text-green-400 transition">
@@ -143,10 +143,10 @@ const Player: React.FC = () => {
           <Maximize size={24} />
         </button>
       </div>
-      
+
       {/* Status Info (Optional) */}
       <div className={`absolute top-4 left-4 text-white/50 text-sm font-mono transition-opacity duration-300 ${showControls ? 'opacity-100' : 'opacity-0'}`}>
-         {currentIndex + 1} / {slides.length} • {isPlaying ? 'Playing' : 'Paused'}
+        {currentIndex + 1} / {slides.length} • {isPlaying ? 'Playing' : 'Paused'}
       </div>
     </div>
   );

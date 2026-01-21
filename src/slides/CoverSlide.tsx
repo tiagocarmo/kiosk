@@ -17,13 +17,13 @@ const CoverSlide: React.FC<CoverSlideProps> = ({
       <div className="absolute top-12 right-12 text-2xl font-medium tracking-tight">
         {monthLabel}
       </div>
-      
+
       <div className="mt-48">
         <h1 className="text-[5rem] font-medium leading-tight tracking-tight mb-8 opacity-90">
           {title}
         </h1>
         <div className="w-[800px]">
-             <MinuLogo className="w-full h-auto" color="black" />
+          <MinuLogo className="w-full h-auto" color="black" />
         </div>
       </div>
     </div>
