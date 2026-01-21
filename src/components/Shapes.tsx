@@ -39,7 +39,8 @@ export const ArchShape: React.FC<ShapeProps> = ({ color, className }) => (
 );
 
 export const MinuLogo: React.FC<{ color?: string; className?: string }> = ({ color = "black", className }) => (
-  <svg viewBox="0 0 400 150" className={className} fill={color} xmlns="http://www.w3.org/2000/svg">
+  // viewBox increased by 1.25x to make the rendered logo ~80% of previous size
+  <svg viewBox="0 0 500 187.5" className={className} fill={color} xmlns="http://www.w3.org/2000/svg">
     <path d="M40 140 V 60 C 40 30, 90 30, 90 60 V 140 M90 140 V 60 C 90 30, 140 30, 140 60 V 140" stroke={color} strokeWidth="35" strokeLinecap="round" fill="none" />
     <line x1="190" y1="40" x2="190" y2="140" stroke={color} strokeWidth="35" strokeLinecap="round" />
     <path d="M240 140 V 60 C 240 30, 290 30, 290 60 V 140" stroke={color} strokeWidth="35" strokeLinecap="round" fill="none" />

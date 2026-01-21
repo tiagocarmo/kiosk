@@ -19,18 +19,16 @@ const Player: React.FC = () => {
   const slides = (playlistData?.slides || []) as SlideData[];
   const defaultConfig = playlistData?.config || { defaultDuration: 10000 };
 
-  // Load playlist file based on ?playlist=<id> query param.
+  // Load playlist file based on ?playlist=<id> query param at runtime.
+  // Fetch from /playlists/*.json so files can be changed without rebuild.
   useEffect(() => {
     let cancelled = false;
 
     const params = new URLSearchParams(window.location.search);
     const id = params.get('playlist');
 
-    const requestedFile = id ? `playlist-${id}.json` : 'playlist.json';
-    const defaultFile = 'playlist.json';
-
     const fetchJson = async (path: string) => {
-      const resp = await fetch(path);
+      const resp = await fetch(path, { cache: 'no-store' });
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
       return resp.json();
     };
@@ -38,29 +36,32 @@ const Player: React.FC = () => {
     (async () => {
       try {
         setLoadingPlaylist(true);
-        // Try requested first (if any), otherwise default directly
-        let data: any;
+
+        const defaultPath = '/playlists/playlist.json';
+        let data: any | null = null;
+
         if (id) {
+          const requestedPath = `/playlists/playlist-${id}.json`;
           try {
-            data = await fetchJson(`/src/content/${requestedFile}`);
+            data = await fetchJson(requestedPath);
           } catch (err) {
-            // fallback to default
-            console.warn(`Requested playlist ${requestedFile} not found, falling back to ${defaultFile}`);
-            data = await fetchJson(`/src/content/${defaultFile}`);
+            console.warn(`Requested playlist ${requestedPath} not found, falling back to ${defaultPath}`);
           }
-        } else {
-          data = await fetchJson(`/src/content/${defaultFile}`);
+        }
+
+        if (!data) {
+          data = await fetchJson(defaultPath);
         }
 
         if (cancelled) return;
 
-        // basic validation
         if (!data || !Array.isArray(data.slides)) {
           throw new Error('Invalid playlist format (missing slides array)');
         }
 
         setPlaylistData(data);
         setPlaylistError(null);
+        setCurrentIndex(0);
       } catch (err: any) {
         console.error('Error loading playlist', err);
         if (!cancelled) setPlaylistError(String(err?.message || err));
@@ -75,10 +76,12 @@ const Player: React.FC = () => {
   }, []);
 
   const nextSlide = useCallback(() => {
+    if (slides.length === 0) return;
     setCurrentIndex((prev) => (prev + 1) % slides.length);
   }, [slides.length]);
 
   const prevSlide = useCallback(() => {
+    if (slides.length === 0) return;
     setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
   }, [slides.length]);
 
@@ -101,6 +104,7 @@ const Player: React.FC = () => {
   // Timer Effect
   useEffect(() => {
     if (!playlistData) return; // wait until playlist loaded
+    if (slides.length === 0) return; // nothing to schedule
 
     if (isPlaying) {
       const currentSlide = slides[currentIndex];
@@ -165,9 +169,10 @@ const Player: React.FC = () => {
 
   // Preload next image logic (simple version)
   useEffect(() => {
+    if (slides.length === 0) return;
     const nextIdx = (currentIndex + 1) % slides.length;
     const nextSlideData = slides[nextIdx];
-    if (nextSlideData.props.photoAsset) {
+    if (nextSlideData?.props?.photoAsset) {
       const img = new Image();
       img.src = nextSlideData.props.photoAsset;
     }
@@ -185,16 +190,18 @@ const Player: React.FC = () => {
     return <div className="w-full h-full flex items-center justify-center text-white">Nenhum slide na playlist</div>;
   }
 
-  const CurrentComponent = SLIDE_COMPONENTS[slides[currentIndex].type];
+  // protect against currentIndex being out of range for new playlist
+  const safeIndex = slides.length === 0 ? 0 : Math.min(currentIndex, slides.length - 1);
+  const CurrentComponent = SLIDE_COMPONENTS[slides[safeIndex].type];
 
   if (!CurrentComponent) {
-    return <div className="text-white">Slide type not found: {slides[currentIndex].type}</div>;
+    return <div className="text-white">Slide type not found: {slides[safeIndex]?.type}</div>;
   }
 
   return (
     <div className="relative w-full h-full group">
       <Stage>
-        <CurrentComponent {...slides[currentIndex].props} />
+        <CurrentComponent {...slides[safeIndex].props} />
       </Stage>
 
       {/* Floating Controls */}
@@ -218,7 +225,7 @@ const Player: React.FC = () => {
 
       {/* Status Info (Optional) */}
       <div className={`absolute top-4 left-4 text-white/50 text-sm font-mono transition-opacity duration-300 ${showControls ? 'opacity-100' : 'opacity-0'}`}>
-        {currentIndex + 1} / {slides.length} • {isPlaying ? 'Playing' : 'Paused'}
+        {safeIndex + 1} / {slides.length} • {isPlaying ? 'Playing' : 'Paused'}
       </div>
     </div>
   );

@@ -25,6 +25,34 @@ Uma aplicação React leve e performática desenvolvida para exibição de conte
 
 3.  Acesse `http://localhost:5173` (ou a porta indicada).
 
+Forçar porta (opções)
+
+- Temporário (na sessão atual):
+
+```bash
+# no Linux/macOS
+DEV_PORT=3000 npm run dev
+
+# ou usar PORT (algumas infra-estruturas esperam PORT)
+PORT=3000 npm run dev
+```
+
+- Via CLI do Vite:
+
+```bash
+npx vite --port 3000
+```
+
+- Permanente (projeto): o `vite.config.ts` já lê `DEV_PORT`/`PORT` e define `strictPort: true`, ou você pode alterar o script `package.json` para:
+
+```json
+"scripts": {
+  "dev": "vite --port 3000"
+}
+```
+
+Observação: com `strictPort: true` o servidor falhará se a porta estiver ocupada (não auto-incrementa). Isso evita que a porta mude automaticamente.
+
 ## Funcionalidades Principais
 
 ### 1. Stage Escalável (`src/app/Stage.tsx`)
@@ -58,25 +86,25 @@ Os slides são componentes React isolados em `src/slides/`.
 
 ## Múltiplas Playlists (seleção via URL)
 
-Este player agora suporta múltiplos arquivos de playlist e permite escolher qual carregar via query param `?playlist=`.
+Este player carrega playlists dinamicamente no frontend por query param `?playlist=`. Para que o carregamento seja feito em runtime (sem necessidade de rebuild), coloque os JSONs de playlist em `public/playlists/`.
 
-- Para usar a playlist padrão (arquivo `src/content/playlist.json`):
+- Para usar a playlist padrão (arquivo `public/playlists/playlist.json`):
   - http://localhost:5173/
-- Para usar uma playlist alternativa localizada em `src/content/playlist-<id>.json` (ex.: `playlist-a.json`), abra a URL:
+- Para usar uma playlist alternativa (ex.: `playlist-a.json`), abra a URL:
   - http://localhost:5173/?playlist=a
 
-Arquivos de playlist adicionados ao repositório de exemplo:
+Exemplos incluídos no repositório (em `public/playlists/`):
 
-- `src/content/playlist-a.json` — Destaques e comunicados curtos (defaultDuration: 8000ms)
-- `src/content/playlist-b.json` — Comunicados e aniversariantes (defaultDuration: 12000ms)
-- `src/content/playlist-c.json` — Resumo mensal e eventos (defaultDuration: 7000ms)
+- `public/playlists/playlist.json` — Default (defaultDuration: 10000ms)
+- `public/playlists/playlist-a.json` — Destaques e comunicados curtos (defaultDuration: 8000ms)
+- `public/playlists/playlist-b.json` — Comunicados e aniversariantes (defaultDuration: 12000ms)
+- `public/playlists/playlist-c.json` — Resumo mensal e eventos (defaultDuration: 7000ms)
 
 Observação de deploy:
 
- - Durante o desenvolvimento com Vite, o código busca `/src/content/playlist-<id>.json` e isso funciona no servidor de desenvolvimento.
- - Para produção é recomendado mover playlists para `public/` (por exemplo `public/playlists/playlist-a.json`) e ajustar as URLs para `/playlists/playlist-a.json` ou usar `import.meta.glob` para embutir os arquivos no bundle.
+- Arquivos em `public/` são servidos estaticamente tanto no dev (`vite`) quanto no build/host. Esse é o comportamento desejado quando você quer trocar playlists sem rebuild.
 
-Se quiser, eu posso mover os arquivos de exemplo para `public/playlists/` agora e atualizar o `Player.tsx` para usar esse caminho (recomendado para builds estáticos).
+Se preferir playlists embutidas no bundle (menos dinâmico, mas sem necessidade de copiar para `public/`), podemos usar `import.meta.glob` — porém isso exige rebuild para qualquer mudança de arquivo.
 
 ## Boas Práticas de Performance
 - **Assets**: Imagens externas (fotos de colaboradores) são pré-carregadas 1 slide antes de aparecerem para evitar "piscas".
