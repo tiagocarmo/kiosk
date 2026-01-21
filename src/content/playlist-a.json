@@ -1,0 +1,36 @@
+{
+  "config": {
+    "defaultDuration": 8000
+  },
+  "slides": [
+    {
+      "type": "cover",
+      "duration": 4000,
+      "props": {
+        "monthLabel": "Fevereiro 2026",
+        "title": "Destaques da Semana",
+        "backgroundColor": "#1E90FF"
+      }
+    },
+    {
+      "type": "news",
+      "props": {
+        "title": "NOTÍCIAS RÁPIDAS",
+        "monthLabel": "Fev/26",
+        "bullets": [
+          "Entrega do projeto Alfa",
+          "Nova contratação no Produto"
+        ],
+        "themeColor": "#ff914d"
+      }
+    },
+    {
+      "type": "area-info",
+      "props": {
+        "title": "RH AVISA",
+        "bodyText": "Palestra sobre bem-estar na sexta-feira às 10h.\nInscrições na intranet.",
+        "themeColor": "#87ceeb"
+      }
+    }
+  ]
+}

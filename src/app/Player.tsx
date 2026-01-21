@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Stage from './Stage';
 import { SLIDE_COMPONENTS, SlideData } from '../slides/registry';
-import playlistData from '../content/playlist.json';
 import { Maximize, Pause, Play, SkipBack, SkipForward } from 'lucide-react';
 
 const Player: React.FC = () => {
@@ -12,8 +11,68 @@ const Player: React.FC = () => {
   const timerRef = useRef<number | null>(null);
   const controlsTimeoutRef = useRef<number | null>(null);
 
-  const slides = playlistData.slides as SlideData[];
-  const defaultConfig = playlistData.config;
+  // Playlist state (loaded at runtime so we can choose via ?playlist=...)
+  const [playlistData, setPlaylistData] = useState<any | null>(null);
+  const [loadingPlaylist, setLoadingPlaylist] = useState(true);
+  const [playlistError, setPlaylistError] = useState<string | null>(null);
+
+  const slides = (playlistData?.slides || []) as SlideData[];
+  const defaultConfig = playlistData?.config || { defaultDuration: 10000 };
+
+  // Load playlist file based on ?playlist=<id> query param.
+  useEffect(() => {
+    let cancelled = false;
+
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('playlist');
+
+    const requestedFile = id ? `playlist-${id}.json` : 'playlist.json';
+    const defaultFile = 'playlist.json';
+
+    const fetchJson = async (path: string) => {
+      const resp = await fetch(path);
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      return resp.json();
+    };
+
+    (async () => {
+      try {
+        setLoadingPlaylist(true);
+        // Try requested first (if any), otherwise default directly
+        let data: any;
+        if (id) {
+          try {
+            data = await fetchJson(`/src/content/${requestedFile}`);
+          } catch (err) {
+            // fallback to default
+            console.warn(`Requested playlist ${requestedFile} not found, falling back to ${defaultFile}`);
+            data = await fetchJson(`/src/content/${defaultFile}`);
+          }
+        } else {
+          data = await fetchJson(`/src/content/${defaultFile}`);
+        }
+
+        if (cancelled) return;
+
+        // basic validation
+        if (!data || !Array.isArray(data.slides)) {
+          throw new Error('Invalid playlist format (missing slides array)');
+        }
+
+        setPlaylistData(data);
+        setPlaylistError(null);
+      } catch (err: any) {
+        console.error('Error loading playlist', err);
+        if (!cancelled) setPlaylistError(String(err?.message || err));
+      } finally {
+        if (!cancelled) setLoadingPlaylist(false);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const nextSlide = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % slides.length);
@@ -41,9 +100,11 @@ const Player: React.FC = () => {
 
   // Timer Effect
   useEffect(() => {
+    if (!playlistData) return; // wait until playlist loaded
+
     if (isPlaying) {
       const currentSlide = slides[currentIndex];
-      const duration = currentSlide.duration || defaultConfig.defaultDuration;
+      const duration = currentSlide?.duration || defaultConfig.defaultDuration;
 
       timerRef.current = window.setTimeout(() => {
         nextSlide();
@@ -53,7 +114,7 @@ const Player: React.FC = () => {
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
-  }, [currentIndex, isPlaying, nextSlide, slides, defaultConfig.defaultDuration]);
+  }, [currentIndex, isPlaying, nextSlide, slides, defaultConfig.defaultDuration, playlistData]);
 
   // Keyboard Shortcuts
   useEffect(() => {
@@ -112,6 +173,17 @@ const Player: React.FC = () => {
     }
   }, [currentIndex, slides]);
 
+  if (loadingPlaylist) {
+    return <div className="w-full h-full flex items-center justify-center text-white">Carregando playlist...</div>;
+  }
+
+  if (playlistError) {
+    return <div className="w-full h-full flex items-center justify-center text-red-400">Erro carregando playlist: {playlistError}</div>;
+  }
+
+  if (slides.length === 0) {
+    return <div className="w-full h-full flex items-center justify-center text-white">Nenhum slide na playlist</div>;
+  }
 
   const CurrentComponent = SLIDE_COMPONENTS[slides[currentIndex].type];
 

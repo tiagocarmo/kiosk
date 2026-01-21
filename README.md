@@ -56,10 +56,32 @@ Os slides são componentes React isolados em `src/slides/`.
 2.  **Registre**: Adicione a importação e a chave no objeto `SLIDE_COMPONENTS` em `src/slides/registry.ts`.
 3.  **Adicione à Playlist**: Edite `src/content/playlist.json` e adicione uma entrada no array `slides` com o `type` registrado e as `props` necessárias.
 
+## Múltiplas Playlists (seleção via URL)
+
+Este player agora suporta múltiplos arquivos de playlist e permite escolher qual carregar via query param `?playlist=`.
+
+- Para usar a playlist padrão (arquivo `src/content/playlist.json`):
+  - http://localhost:5173/
+- Para usar uma playlist alternativa localizada em `src/content/playlist-<id>.json` (ex.: `playlist-a.json`), abra a URL:
+  - http://localhost:5173/?playlist=a
+
+Arquivos de playlist adicionados ao repositório de exemplo:
+
+- `src/content/playlist-a.json` — Destaques e comunicados curtos (defaultDuration: 8000ms)
+- `src/content/playlist-b.json` — Comunicados e aniversariantes (defaultDuration: 12000ms)
+- `src/content/playlist-c.json` — Resumo mensal e eventos (defaultDuration: 7000ms)
+
+Observação de deploy:
+
+ - Durante o desenvolvimento com Vite, o código busca `/src/content/playlist-<id>.json` e isso funciona no servidor de desenvolvimento.
+ - Para produção é recomendado mover playlists para `public/` (por exemplo `public/playlists/playlist-a.json`) e ajustar as URLs para `/playlists/playlist-a.json` ou usar `import.meta.glob` para embutir os arquivos no bundle.
+
+Se quiser, eu posso mover os arquivos de exemplo para `public/playlists/` agora e atualizar o `Player.tsx` para usar esse caminho (recomendado para builds estáticos).
+
 ## Boas Práticas de Performance
 - **Assets**: Imagens externas (fotos de colaboradores) são pré-carregadas 1 slide antes de aparecerem para evitar "piscas".
 - **SVG Leve**: Formas complexas (ondas, arcos) são desenhadas via SVG (`src/components/Shapes.tsx`) ao invés de imagens PNG pesadas.
 - **Zero Layout Shift**: O uso do Stage fixo evita que fontes carreguem em tamanhos errados e pulem na tela.
 
 ---
-Desenvolvido para Minu - Pessoas & Cultura.
+Desenvolvido para Minu - Eng. de Software.
