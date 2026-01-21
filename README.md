@@ -170,6 +170,33 @@ Cada item em `slides` no JSON deve conter um `type` que corresponde a um compone
   }
   ```
 
+- image — componente: `src/slides/ImageSlide.tsx`
+  - props:
+    - `url` (string) — URL pública da imagem a ser exibida em tela cheia. **Obrigatório**.
+    - `alt` (string) — texto alternativo da imagem (opcional).
+    - `mode` (string) — `cover` | `contain` (opcional, default `cover`). `cover` preenche a tela mantendo proporção (pode cortar), `contain` mostra a imagem inteira com possível letterbox.
+    - `backgroundColor` (string) — cor de fundo enquanto a imagem carrega ou em áreas vazias (opcional, default `#000000`).
+    - `title` (string) — título pequeno opcional exibido no topo (opcional).
+
+  Observações para o `image` slide:
+
+  - O slide usa `<img>` com `object-fit` para ajustar a imagem na tela. Por padrão `mode: "cover"` é usado para preencher a tela de forma visualmente agradável.
+  - Se a imagem falhar ao carregar, é exibido um placeholder com a mensagem "Imagem não disponível".
+
+  Exemplo de entrada no JSON de playlist:
+
+  ```json
+  {
+    "type": "image",
+    "props": {
+      "url": "https://cdn.prod.website-files.com/5f81e0a696115863da6ee0ef/616f011302cb8854fcd0e17a_img_hero3-(1)%20(1).png",
+      "title": "Imagem Exemplo",
+      "mode": "cover",
+      "backgroundColor": "#000000"
+    }
+  }
+  ```
+
 Observações gerais:
 
 - Todas as props são serializáveis (JSON-safe). Evite passar funções ou valores não-serializáveis na playlist.

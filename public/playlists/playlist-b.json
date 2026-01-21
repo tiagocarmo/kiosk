@@ -12,6 +12,15 @@
       }
     },
     {
+      "type": "image",
+      "props": {
+        "url": "https://cdn.prod.website-files.com/5f81e0a696115863da6ee0ef/616f011302cb8854fcd0e17a_img_hero3-(1)%20(1).png",
+        "title": "Imagem Exemplo",
+        "mode": "cover",
+        "backgroundColor": "#000000"
+      }
+    },
+    {
       "type": "birthday",
       "props": {
         "title": "ANIVERSARIANTES DO MÊS",
