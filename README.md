@@ -106,6 +106,76 @@ Observação de deploy:
 
 Se preferir playlists embutidas no bundle (menos dinâmico, mas sem necessidade de copiar para `public/`), podemos usar `import.meta.glob` — porém isso exige rebuild para qualquer mudança de arquivo.
 
+## Tipos de slides (slide.type) e suas props
+
+Cada item em `slides` no JSON deve conter um `type` que corresponde a um componente em `src/slides/registry.ts`. Abaixo estão os tipos suportados atualmente e as props que cada slide espera.
+
+- cover — componente: `src/slides/CoverSlide.tsx`
+  - props:
+    - `monthLabel` (string) — texto pequeno exibido no canto (ex.: "Janeiro 2026"). **Obrigatório**.
+    - `backgroundColor` (string) — cor de fundo CSS (ex.: `#00C800`). **Opcional** (default `#00C800`).
+    - `title` (string) — título principal. **Opcional** (default `TV CORPORATIVA`).
+
+- birthday — componente: `src/slides/BirthdaySlide.tsx`
+  - props:
+    - `title` (string) — texto do cabeçalho (ex.: "ANIVERSARIANTE DO DIA"). **Obrigatório**.
+    - `personName` (string) — nome da pessoa. **Obrigatório**.
+    - `area` (string) — área / time da pessoa. **Obrigatório**.
+    - `dateLabel` (string) — data exibida (ex.: "22 de janeiro"). **Obrigatório**.
+    - `photoAsset` (string) — URL da foto (opcional). Se ausente, mostra placeholder.
+
+- tenure — componente: `src/slides/TenureSlide.tsx`
+  - props:
+    - `title` (string) — texto do cabeçalho. **Obrigatório**.
+    - `personName` (string) — nome da pessoa. **Obrigatório**.
+    - `area` (string) — área / time. **Obrigatório**.
+    - `dateLabel` (string) — data/label exibido. **Obrigatório**.
+    - `yearsNumber` (number) — anos de casa (badge grande). **Obrigatório**.
+    - `photoAsset` (string) — URL da foto (opcional). Se ausente, mostra placeholder.
+
+- news — componente: `src/slides/NewsSlide.tsx`
+  - props:
+    - `title` (string) — título da seção (ex.: "ACONTECEU NA MINU"). **Obrigatório**.
+    - `monthLabel` (string) — label grande secundário (ex.: "Janeiro/26"). **Obrigatório**.
+    - `bullets` (string[]) — array de itens de notícia a serem listados. **Obrigatório** (pelo menos vazio `[]`).
+    - `themeColor` (string) — cor de destaque para a forma (opcional, default `#ff66b2`).
+
+- area-info — componente: `src/slides/AreaInfoSlide.tsx`
+  - props:
+    - `title` (string) — título principal. **Obrigatório**.
+    - `bodyText` (string) — texto longo do corpo; respeita quebras de linha (`\n`) e `whitespace-pre-line`. **Obrigatório**.
+    - `themeColor` (string) — cor de fundo/tema para a metade direita (opcional, default `#87ceeb`).
+
+- pdf — componente: `src/slides/PdfSlide.tsx`
+  - props:
+    - `url` (string) — URL pública para o arquivo PDF que será incorporado. **Obrigatório**.
+    - `title` (string) — título exibido acima do PDF. **Opcional** (default: "Documento").
+    - `backgroundColor` (string) — cor de fundo do slide (opcional, default `#FEFEF5`).
+
+  Observações para o `pdf` slide:
+
+  - O PDF é incorporado com um `<iframe src="..." />`. Para funcionar corretamente, a URL deve apontar para um arquivo que permita embed (alguns servidores bloqueiam via headers `X-Frame-Options`).
+  - Para servir PDFs localmente, coloque-os em `public/assets/docs/` e use uma URL como `/assets/docs/manual.pdf`.
+
+  Exemplo de entrada no JSON de playlist:
+
+  ```json
+  {
+    "type": "pdf",
+    "props": {
+      "url": "/assets/docs/manual.pdf",
+      "title": "Manual de Processos",
+      "backgroundColor": "#ffffff"
+    }
+  }
+  ```
+
+Observações gerais:
+
+- Todas as props são serializáveis (JSON-safe). Evite passar funções ou valores não-serializáveis na playlist.
+- Se uma prop obrigatória estiver ausente, o slide tenta renderizar um placeholder simples (por exemplo, "FOTO" quando `photoAsset` estiver ausente). Ainda assim é recomendável validar o JSON antes de publicar.
+- Para adicionar novos tipos de slide: crie `src/slides/NovoSlide.tsx`, exporte o componente e registre em `src/slides/registry.ts` com a chave desejada.
+
 ## Boas Práticas de Performance
 - **Assets**: Imagens externas (fotos de colaboradores) são pré-carregadas 1 slide antes de aparecerem para evitar "piscas".
 - **SVG Leve**: Formas complexas (ondas, arcos) são desenhadas via SVG (`src/components/Shapes.tsx`) ao invés de imagens PNG pesadas.

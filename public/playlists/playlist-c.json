@@ -12,6 +12,14 @@
       }
     },
     {
+      "type": "pdf",
+      "props": {
+        "url": "https://pdfobject.com/pdf/sample.pdf",
+        "title": "Documento de Exemplo",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    {
       "type": "news",
       "props": {
         "title": "EVENTOS",

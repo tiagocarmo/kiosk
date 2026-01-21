@@ -4,8 +4,9 @@ import BirthdaySlide from './BirthdaySlide';
 import TenureSlide from './TenureSlide';
 import NewsSlide from './NewsSlide';
 import AreaInfoSlide from './AreaInfoSlide';
+import PdfSlide from './PdfSlide';
 
-export type SlideType = 'cover' | 'birthday' | 'tenure' | 'news' | 'area-info';
+export type SlideType = 'cover' | 'birthday' | 'tenure' | 'news' | 'area-info' | 'pdf';
 
 export interface SlideData {
   type: SlideType;
@@ -19,4 +20,5 @@ export const SLIDE_COMPONENTS: Record<SlideType, React.FC<any>> = {
   tenure: TenureSlide,
   news: NewsSlide,
   'area-info': AreaInfoSlide,
+  pdf: PdfSlide,
 };
