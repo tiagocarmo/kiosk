@@ -37,11 +37,11 @@ const Player: React.FC = () => {
       try {
         setLoadingPlaylist(true);
 
-        const defaultPath = '/playlists/playlist.json';
+        const defaultPath = 'playlists/playlist.json';
         let data: any | null = null;
 
         if (id) {
-          const requestedPath = `/playlists/playlist-${id}.json`;
+          const requestedPath = `playlists/playlist-${id}.json`;
           try {
             data = await fetchJson(requestedPath);
           } catch (err) {
