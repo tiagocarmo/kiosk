@@ -21,6 +21,16 @@
       }
     },
     {
+      "type": "iframe",
+      "props": {
+        "url": "https://p.datadoghq.com/sb/embed/60bde5be-221d-11ed-b331-da7ad0900002-d117150a50298130960776ea0e437935",
+        "title": "Dash Exemplo",
+        "backgroundColor": "#000000",
+        "allow": "accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share; fullscreen; display-capture",
+        "allowFullScreen": true
+      }
+    },
+    {
       "type": "birthday",
       "props": {
         "title": "ANIVERSARIANTES DO MÊS",

@@ -197,6 +197,34 @@ Cada item em `slides` no JSON deve conter um `type` que corresponde a um compone
   }
   ```
 
+- iframe — componente: `src/slides/IframeSlide.tsx`
+  - props:
+    - `url` (string) — URL pública que será carregada no iframe. **Obrigatório**.
+    - `title` (string) — título exibido no topo do slide (opcional).
+    - `backgroundColor` (string) — cor de fundo do slide (opcional, default `#000000`).
+    - `allow` (string) — lista de permissões para o iframe (`allow` attribute), opcional.
+    - `allowFullScreen` (boolean) — permitir fullscreen no iframe (default: `true`).
+
+  Observações para o `iframe` slide:
+
+  - O slide posiciona um `<iframe>` full-bleed ocupando toda a área do slide. Para funcionar, o destino deve permitir embed (sem `X-Frame-Options: DENY/SAMEORIGIN`).
+  - URLs que exigem autenticação ou tokens (dashboards internos, ferramentas SaaS) podem não funcionar corretamente sem configuração de CORS/cookies/autenticação apropriada.
+  - Caso o iframe não carregue por restrições do servidor destino, é recomendado hospedar a página/visualização em um local que permita embed ou usar integrações específicas (ex.: APIs, PDF.js para documentos).
+
+  Exemplo de entrada no JSON de playlist:
+
+  ```json
+  {
+    "type": "iframe",
+    "props": {
+      "url": "https://app.datadoghq.com/dashboard/git-tn6-wh6/acompanhamento-de-servios?fromUser=false&refresh_mode=sliding&from_ts=1768917393367&to_ts=1769090193367&live=true",
+      "title": "Dash Exemplo",
+      "backgroundColor": "#000000",
+      "allowFullScreen": true
+    }
+  }
+  ```
+
 Observações gerais:
 
 - Todas as props são serializáveis (JSON-safe). Evite passar funções ou valores não-serializáveis na playlist.
