@@ -31,6 +31,14 @@
       }
     },
     {
+      "type": "motivational",
+      "props": {
+        "title": "Frase do Dia",
+        "url": "/playlists/motivational-frases.json",
+        "backgroundColor": "#071E3D"
+      }
+    },
+    {
       "type": "birthday",
       "props": {
         "title": "ANIVERSARIANTES DO MÊS",

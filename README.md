@@ -225,6 +225,34 @@ Cada item em `slides` no JSON deve conter um `type` que corresponde a um compone
   }
   ```
 
+-- motivational — componente: `src/slides/MotivationalSlide.tsx`
+  - props:
+    - `url` (string) — URL pública para um JSON com o formato { locale, total, frases: [{dia, texto}] }. Ex.: `/playlists/motivational-frases.json`. **Opcional** (pode passar `frases` inline).
+    - `frases` (array) — alternativa para passar o array de frases diretamente no `props` (cada item: { dia, texto }).
+    - `title` (string) — título pequeno exibido acima da frase (opcional).
+    - `backgroundColor` (string) — cor de fundo do slide (opcional, default `#071E3D`).
+    - `day` (number) — sobrescreve o cálculo do dia do ano para seleção da frase (1..365). Útil para pré-visualização.
+
+  Observações para o `motivational` slide:
+
+  - O slide carrega um arquivo JSON com 365 frases e seleciona a frase correspondente ao dia do ano (1..365). Ex.: 2 de janeiro -> dia 2 -> usa a segunda frase.
+  - Se a fonte de frases não estiver disponível, o slide apresenta uma mensagem padrão curta.
+  - O texto é ajustado dinamicamente (a fonte encolhe) até caber na tela, garantindo boa leitura em TVs de diferentes resoluções.
+  - No final do slide aparece a nota: "Frase criada por IA, pode conter erros ✨".
+
+  Exemplo de entrada no JSON de playlist (usa o JSON em `public/playlists/motivational-frases.json`):
+
+  ```json
+  {
+    "type": "motivational",
+    "props": {
+      "title": "Frase do Dia",
+      "url": "/playlists/motivational-frases.json",
+      "backgroundColor": "#071E3D"
+    }
+  }
+  ```
+
 Observações gerais:
 
 - Todas as props são serializáveis (JSON-safe). Evite passar funções ou valores não-serializáveis na playlist.

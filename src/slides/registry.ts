@@ -7,8 +7,9 @@ import AreaInfoSlide from './AreaInfoSlide';
 import PdfSlide from './PdfSlide';
 import ImageSlide from './ImageSlide';
 import IframeSlide from './IframeSlide';
+import MotivationalSlide from './MotivationalSlide';
 
-export type SlideType = 'cover' | 'birthday' | 'tenure' | 'news' | 'area-info' | 'pdf' | 'image' | 'iframe';
+export type SlideType = 'cover' | 'birthday' | 'tenure' | 'news' | 'area-info' | 'pdf' | 'image' | 'iframe' | 'motivational';
 
 export interface SlideData {
   type: SlideType;
@@ -25,4 +26,5 @@ export const SLIDE_COMPONENTS: Record<SlideType, React.FC<any>> = {
   pdf: PdfSlide,
   image: ImageSlide,
   iframe: IframeSlide,
+  motivational: MotivationalSlide,
 };
