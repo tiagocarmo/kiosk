@@ -34,7 +34,7 @@
       "type": "motivational",
       "props": {
         "title": "Frase do Dia",
-        "url": "/playlists/motivational-frases.json",
+  "url": "playlists/motivational-frases.json",
         "backgroundColor": "#071E3D",
         "backgroundImage": "assets/bg-motivational-frases.png"
       }
