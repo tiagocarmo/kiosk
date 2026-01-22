@@ -174,7 +174,8 @@ Cada item em `slides` no JSON deve conter um `type` que corresponde a um compone
   - props:
     - `url` (string) — URL pública da imagem a ser exibida em tela cheia. **Obrigatório**.
     - `alt` (string) — texto alternativo da imagem (opcional).
-    - `mode` (string) — `cover` | `contain` (opcional, default `cover`). `cover` preenche a tela mantendo proporção (pode cortar), `contain` mostra a imagem inteira com possível letterbox.
+  - `mode` (string) — `cover` | `contain` (opcional, default `cover`). `cover` preenche a tela mantendo proporção (pode cortar), `contain` mostra a imagem inteira com possível letterbox.
+  - `center` (boolean) — `true` faz a imagem ser renderizada centralizada com `max-width`/`max-height` (não full-bleed). Útil para logos/SVGs que não devem preencher toda a tela. Opcional (default: `false`).
     - `backgroundColor` (string) — cor de fundo enquanto a imagem carrega ou em áreas vazias (opcional, default `#000000`).
     - `title` (string) — título pequeno opcional exibido no topo (opcional).
 
@@ -225,6 +226,31 @@ Cada item em `slides` no JSON deve conter um `type` que corresponde a um compone
   }
   ```
 
+- logo — componente: `src/slides/LogoSlide.tsx`
+  - props:
+    - `url` (string) — URL para o logo (SVG/PNG) a ser exibido centralizado. **Obrigatório**.
+    - `backgroundColor` (string) — cor de fundo do slide (opcional, default `#ffffff`).
+    - `size` (string|number) — tamanho máximo do logo (ex.: `"80%"` ou `400` para px). Opcional (default `"80%"`).
+    - `title` (string) — título pequeno opcional exibido acima do logo (opcional).
+
+  Observações para o `logo` slide:
+
+  - Projetado para exibir um logo grande e centralizado (boa para telas de entrada). Use o campo `size` para controlar a escala.
+  - Recomenda-se usar SVGs para qualidade em diferentes resoluções.
+  - Exemplo de uso (veja `public/playlists/playlist-dev-tv.json`):
+
+  ```json
+  {
+    "duration": 20000,
+    "type": "logo",
+    "props": {
+      "url": "/assets/dev-tv-logo.svg",
+      "backgroundColor": "#ffffff",
+      "size": "80%"
+    }
+  }
+  ```
+
 -- motivational — componente: `src/slides/MotivationalSlide.tsx`
   - props:
     - `url` (string) — URL pública para um JSON com o formato { locale, total, frases: [{dia, texto}] }. Ex.: `/playlists/motivational-frases.json`. **Opcional** (pode passar `frases` inline).
@@ -238,6 +264,68 @@ Cada item em `slides` no JSON deve conter um `type` que corresponde a um compone
   - O slide carrega um arquivo JSON com 365 frases e seleciona a frase correspondente ao dia do ano (1..365). Ex.: 2 de janeiro -> dia 2 -> usa a segunda frase.
   - Se a fonte de frases não estiver disponível, o slide apresenta uma mensagem padrão curta.
   - O texto é ajustado dinamicamente (a fonte encolhe) até caber na tela, garantindo boa leitura em TVs de diferentes resoluções.
+
+## Tutorial: Criando a playlist "Dev TV" (dev-tv)
+
+Vamos criar uma playlist dedicada para exibição em ambiente de desenvolvimento. O arquivo estará em `public/playlists/dev-tv.json` e pode ser acessado em runtime via `?playlist=dev-tv`.
+
+Objetivo da playlist "dev-tv":
+- Tela inicial com o logo (SVG)
+- Frase motivacional do dia (carregada de `/playlists/motivational-frases.json`)
+- Dashboard Datadog com métricas de desenvolvimento
+
+Exemplo de `public/playlists/dev-tv.json` (já incluído no repositório):
+
+```json
+{
+  "config": { "defaultDuration": 10000 },
+  "slides": [
+    {
+      "type": "image",
+      "props": {
+        "url": "/assets/dev-tv-logo.svg",
+        "title": "Dev TV",
+        "mode": "contain",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    {
+      "type": "motivational",
+      "props": {
+        "title": "Frase do Dia",
+        "url": "/playlists/motivational-frases.json",
+        "backgroundColor": "#071E3D"
+      }
+    },
+    {
+      "type": "iframe",
+      "props": {
+        "url": "https://p.datadoghq.com/sb/embed/60bde5be-221d-11ed-b331-da7ad0900002-d117150a50298130960776ea0e437935",
+        "title": "Métricas Desenvolvimento",
+        "backgroundColor": "#000000",
+        "allowFullScreen": true
+      }
+    }
+  ]
+}
+```
+
+Como usar:
+
+- Rode o servidor de desenvolvimento:
+
+```bash
+npm run dev
+```
+
+- Abra a URL da dev TV:
+
+http://localhost:5173/?playlist=dev-tv
+
+Dicas:
+- O SVG do logo foi adicionado em `public/assets/dev-tv-logo.svg`. Se quiser trocar o visual, edite esse arquivo.
+- Caso o Datadog não permita embed por política de segurança do servidor, o iframe pode não carregar — hospede um snapshot do painel ou use outra fonte que permita embed.
+
   - No final do slide aparece a nota: "Frase criada por IA, pode conter erros ✨".
 
   Exemplo de entrada no JSON de playlist (usa o JSON em `public/playlists/motivational-frases.json`):

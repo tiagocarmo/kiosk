@@ -6,6 +6,7 @@ export interface MotivationalSlideProps {
   url?: string; // optional URL to a JSON with { locale, total, frases: [{dia, texto}] }
   frases?: Array<{ dia: number; texto: string }>; // optional inline data
   day?: number; // override day-of-year (1..365)
+  backgroundImage?: string; // optional background image URL
 }
 
 function getDayOfYear(d = new Date()) {
@@ -17,7 +18,7 @@ function getDayOfYear(d = new Date()) {
 
 const clamp = (v: number, a: number, b: number) => Math.max(a, Math.min(b, v));
 
-const MotivationalSlide: React.FC<MotivationalSlideProps> = ({ title, backgroundColor = '#071E3D', url, frases, day }) => {
+const MotivationalSlide: React.FC<MotivationalSlideProps> = ({ title, backgroundColor = '#071E3D', url, frases, day, backgroundImage }) => {
   const [data, setData] = useState<{ frases?: Array<{ dia: number; texto: string }>; locale?: string } | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const textRef = useRef<HTMLDivElement | null>(null);
@@ -78,21 +79,46 @@ const MotivationalSlide: React.FC<MotivationalSlideProps> = ({ title, background
   }, [phraseText]);
 
   return (
-    <div ref={containerRef} className="w-[1920px] h-[1080px] flex flex-col" style={{ background: backgroundColor }}>
-      <div className="px-12 pt-8">
-        {title && <div className="text-white/90 font-semibold text-3xl">{title}</div>}
+    <div ref={containerRef} className="relative w-[1920px] h-[1080px] flex flex-col" style={{ background: backgroundColor }}>
+      {/* full-bleed background image (simple implementation) */}
+      {backgroundImage && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={backgroundImage}
+          alt="background"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+          }}
+        />
+      )}
+
+      <div className="relative px-12 pt-8 z-10">
+        {title && <div style={{ color: '#FFFFFF', fontWeight: 600, fontSize: 28 }}>{title}</div>}
       </div>
-      <div className="flex-1 flex items-center justify-center px-16">
+
+      <div className="relative flex-1 flex items-center justify-center px-16 z-10">
         <div
           ref={textRef}
-          className="text-white text-center leading-[1.02] whitespace-pre-wrap font-medium"
-          style={{ fontSize: fontSizePx ? `${fontSizePx}px` : '48px' }}
+          style={{
+            color: '#FFFFFF',
+            textAlign: 'center',
+            lineHeight: 1.05,
+            whiteSpace: 'pre-wrap',
+            fontWeight: 500,
+            fontSize: fontSizePx ? `${fontSizePx}px` : '48px',
+            maxWidth: '1400px',
+          }}
         >
           {phraseText}
         </div>
       </div>
-      <div className="px-12 pb-8">
-        <div className="text-white/60 text-sm">Frase criada por IA, pode conter erros ✨</div>
+
+      <div className="relative px-12 pb-8 z-10">
+        <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14 }}>Frase criada por IA, pode conter erros ✨</div>
       </div>
     </div>
   );
