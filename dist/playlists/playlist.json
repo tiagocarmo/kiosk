@@ -1,0 +1,16 @@
+{
+  "config": {
+    "defaultDuration": 10000
+  },
+  "slides": [
+    {
+      "type": "cover",
+      "duration": 5000,
+      "props": {
+        "monthLabel": "Janeiro 2026",
+        "title": "TV CORPORATIVA",
+        "backgroundColor": "#00C800"
+      }
+    }
+  ]
+}

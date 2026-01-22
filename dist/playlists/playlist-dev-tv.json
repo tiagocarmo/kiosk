@@ -1,0 +1,37 @@
+{
+  "config": {
+    "defaultDuration": 10000
+  },
+  "slides": [
+    {
+      "duration": 20000,
+      "type": "logo",
+      "props": {
+        "url": "/assets/dev-tv-logo.svg",
+        "backgroundColor": "#ffffff",
+        "size": "80%"
+      }
+    },
+    {
+      "duration": 20000,
+      "type": "motivational",
+      "props": {
+        "title": "Frase do Dia",
+        "url": "/playlists/motivational-frases.json",
+        "backgroundColor": "#071E3D",
+        "backgroundImage": "/assets/bg-motivational-frases.png"
+      }
+    },
+    {
+      "duration": 120000,
+      "type": "iframe",
+      "props": {
+        "url": "https://p.datadoghq.com/sb/embed/60bde5be-221d-11ed-b331-da7ad0900002-d117150a50298130960776ea0e437935",
+        "title": "Métricas Desenvolvimento",
+        "backgroundColor": "#000000",
+        "allow": "accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share; fullscreen; display-capture",
+        "allowFullScreen": true
+      }
+    }
+  ]
+}
