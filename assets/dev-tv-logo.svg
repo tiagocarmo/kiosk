@@ -1,0 +1,14 @@
+<svg width="800" height="300" viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="300" fill="#1a1d21"/>
+
+  <g transform="translate(400, 150)">
+
+    <path d="M-220 -25 L-195 0 L-220 25" fill="none" stroke="#89dc26" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="-185" y="15" width="25" height="10" fill="#89dc26"/>
+
+    <path d="M-130 -22 L-90 0 L-130 22 Z" fill="#ffffff"/>
+
+    <text x="-70" y="18" font-family="Arial, sans-serif" font-weight="800" font-size="75" fill="#ffffff">Dev TV</text>
+
+  </g>
+</svg>
