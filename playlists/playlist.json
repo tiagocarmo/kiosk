@@ -1,15 +1,15 @@
 {
   "config": {
-    "defaultDuration": 10000
+    "defaultDuration": 10
   },
   "slides": [
     {
-      "type": "cover",
-      "duration": 5000,
+      "duration": 20,
+      "type": "logo",
       "props": {
-        "monthLabel": "Janeiro 2026",
-        "title": "TV CORPORATIVA",
-        "backgroundColor": "#00C800"
+        "url": "assets/logo-minu-block.svg",
+        "backgroundColor": "#00C80",
+        "size": "40%"
       }
     }
   ]
