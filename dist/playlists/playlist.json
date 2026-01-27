@@ -1,0 +1,16 @@
+{
+  "config": {
+    "defaultDuration": 10
+  },
+  "slides": [
+    {
+      "duration": 20,
+      "type": "logo",
+      "props": {
+        "url": "assets/logo-minu-block.svg",
+        "backgroundColor": "#00C80",
+        "size": "40%"
+      }
+    }
+  ]
+}

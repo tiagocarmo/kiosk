@@ -1,0 +1,26 @@
+{
+  "config": {
+    "defaultDuration": 10
+  },
+  "slides": [
+    {
+      "duration": 5,
+      "type": "logo",
+      "props": {
+        "url": "assets/logo-minu-block.svg",
+        "backgroundColor": "#ffffff",
+        "size": "40%"
+      }
+    },
+    {
+      "duration": 15,
+      "type": "motivational",
+      "props": {
+        "title": "Frase do Dia",
+        "url": "playlists/motivational-frases.json",
+        "backgroundColor": "#00C800",
+        "backgroundImage": "assets/bg-motivational-frases.png"
+      }
+    }
+  ]
+}
