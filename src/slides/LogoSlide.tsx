@@ -27,7 +27,7 @@ const LogoSlide: React.FC<LogoSlideProps> = ({ url, backgroundColor = '#ffffff',
   }
 
   return (
-    <div className="w-[1920px] h-[1080px] flex flex-col items-center justify-center" style={{ background: backgroundColor }}>
+    <div className="w-[100%] h-[100%] flex flex-col items-center justify-center" style={{ background: backgroundColor }}>
       {title && <div className="mb-6 text-3xl font-semibold text-gray-800">{title}</div>}
       <img src={url} alt="logo" style={style} className="block w-auto h-auto" />
     </div>
