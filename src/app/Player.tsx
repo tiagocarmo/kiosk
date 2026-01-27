@@ -208,7 +208,7 @@ const Player: React.FC = () => {
 
       {/* Floating Controls */}
       <div
-        className={`absolute bottom-8 left-1/2 transform -translate-x-1/2 bg-black/60 backdrop-blur-md rounded-full px-6 py-3 flex items-center gap-6 transition-opacity duration-300 ${showControls ? 'opacity-100' : 'opacity-0'}`}
+        className={`absolute bottom-8 left-1/2 bg-black/60 backdrop-blur-md rounded-full px-6 py-3 flex items-center gap-6 transition-opacity duration-300 ${showControls ? 'opacity-100' : 'opacity-0'}`}
       >
         <button onClick={prevSlide} className="text-white hover:text-green-400 transition">
           <SkipBack size={24} />

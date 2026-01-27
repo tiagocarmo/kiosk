@@ -42,7 +42,6 @@ const Stage: React.FC<StageProps> = ({ children }) => {
         style={{
           width: BASE_WIDTH,
           height: BASE_HEIGHT,
-          transform: `scale(${scale})`,
           transformOrigin: 'center center',
         }}
         className="bg-[#FEFEF5] relative shadow-2xl overflow-hidden"
