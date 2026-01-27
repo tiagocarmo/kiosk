@@ -15,6 +15,7 @@ export type SlideType = 'cover' | 'birthday' | 'tenure' | 'news' | 'area-info' |
 export interface SlideData {
   type: SlideType;
   duration?: number; // Override default duration
+  // NOTE: duration is expressed in seconds (not milliseconds)
   props: Record<string, any>;
 }
 

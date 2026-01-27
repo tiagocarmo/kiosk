@@ -95,10 +95,10 @@ Este player carrega playlists dinamicamente no frontend por query param `?playli
 
 Exemplos incluídos no repositório (em `public/playlists/`):
 
-- `public/playlists/playlist.json` — Default (defaultDuration: 10000ms)
-- `public/playlists/playlist-a.json` — Destaques e comunicados curtos (defaultDuration: 8000ms)
-- `public/playlists/playlist-b.json` — Comunicados e aniversariantes (defaultDuration: 12000ms)
-- `public/playlists/playlist-c.json` — Resumo mensal e eventos (defaultDuration: 7000ms)
+- `public/playlists/playlist.json` — Default (defaultDuration: 10s)
+- `public/playlists/playlist-a.json` — Destaques e comunicados curtos (defaultDuration: 8s)
+- `public/playlists/playlist-b.json` — Comunicados e aniversariantes (defaultDuration: 12s)
+- `public/playlists/playlist-c.json` — Resumo mensal e eventos (defaultDuration: 7s)
 
 Observação de deploy:
 
@@ -241,7 +241,7 @@ Cada item em `slides` no JSON deve conter um `type` que corresponde a um compone
 
   ```json
   {
-    "duration": 20000,
+    "duration": 20,
     "type": "logo",
     "props": {
       "url": "/assets/dev-tv-logo.svg",
@@ -265,6 +265,14 @@ Cada item em `slides` no JSON deve conter um `type` que corresponde a um compone
   - Se a fonte de frases não estiver disponível, o slide apresenta uma mensagem padrão curta.
   - O texto é ajustado dinamicamente (a fonte encolhe) até caber na tela, garantindo boa leitura em TVs de diferentes resoluções.
 
+  Cores recomendadas para Frases Motivacionais
+
+  - `#ff66b2` — rosa
+  - `#00C800` — verde
+  - `#87ceeb` — azul claro
+
+  Uso sugerido: passe uma dessas cores em `props.backgroundColor` no slide `motivational` para obter contraste consistente com o layout (o player renderiza o slide com fundo claro à esquerda e um painel colorido à direita). Essas cores foram escolhidas para legibilidade em telas e boa harmonia visual com os componentes existentes.
+
 ## Tutorial: Criando a playlist "Dev TV" (dev-tv)
 
 Vamos criar uma playlist dedicada para exibição em ambiente de desenvolvimento. O arquivo estará em `public/playlists/dev-tv.json` e pode ser acessado em runtime via `?playlist=dev-tv`.
@@ -278,7 +286,7 @@ Exemplo de `public/playlists/dev-tv.json` (já incluído no repositório):
 
 ```json
 {
-  "config": { "defaultDuration": 10000 },
+  "config": { "defaultDuration": 10 },
   "slides": [
     {
       "type": "image",

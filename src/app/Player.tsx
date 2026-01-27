@@ -17,7 +17,8 @@ const Player: React.FC = () => {
   const [playlistError, setPlaylistError] = useState<string | null>(null);
 
   const slides = (playlistData?.slides || []) as SlideData[];
-  const defaultConfig = playlistData?.config || { defaultDuration: 10000 };
+  // defaultDuration is in seconds (playlist files use seconds now)
+  const defaultConfig = playlistData?.config || { defaultDuration: 10 };
 
   // Load playlist file based on ?playlist=<id> query param at runtime.
   // Fetch from /playlists/*.json so files can be changed without rebuild.
@@ -108,11 +109,12 @@ const Player: React.FC = () => {
 
     if (isPlaying) {
       const currentSlide = slides[currentIndex];
-      const duration = currentSlide?.duration || defaultConfig.defaultDuration;
+      const durationSeconds = currentSlide?.duration || defaultConfig.defaultDuration;
+      const durationMs = Math.max(0, Number(durationSeconds)) * 1000; // convert seconds -> ms
 
       timerRef.current = window.setTimeout(() => {
         nextSlide();
-      }, duration);
+      }, durationMs);
     }
 
     return () => {
